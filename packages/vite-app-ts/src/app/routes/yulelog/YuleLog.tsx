@@ -1,10 +1,10 @@
 import { transactor } from 'eth-components/functions';
 import { EthComponentsSettingsContext } from 'eth-components/models';
-import { useContractLoader, useContractReader, useGasPrice } from 'eth-hooks';
+import { useContractLoader, useGasPrice } from 'eth-hooks';
 import { useEthersContext } from 'eth-hooks/context';
 import { ethers } from 'ethers';
-import React, { useState, FC, useContext, useEffect } from 'react';
-import { HelloWorld, Fireplace } from '~~/generated/contract-types';
+import React, { FC, useContext, useEffect, useState } from 'react';
+import { Fireplace } from '~~/generated/contract-types';
 import { useAppContracts } from '../main/hooks/useAppContracts';
 
 export interface YuleLogProps {}
@@ -42,31 +42,6 @@ export const YuleLog: FC<YuleLogProps> = (props) => {
     }
   };
 
-  const getBurnTime = async (logId: string) => {
-    try {
-      const time = await FireRead.getBurnTime(logId);
-      const now = await FireRead.getCurrentTimestamp();
-      const days = await FireRead.getDays(logId);
-      // const mapping = await FireRead.getMapping(logId);
-      // console.log(ethers.BigNumber.from(time).toString());
-      console.log(ethers.BigNumber.from(days).toString());
-      // console.log(ethers.BigNumber.from(mapping).toString());
-      // ethers.BigNumber.from(time).toString()
-      // console.log(ethers.BigNumber.from(time).toString());
-      // console.log(ethers.BigNumber.from(now).toString());
-      // var difference = (ethers.BigNumber.from(now) - ethers.BigNumber.from(time)) / 60;
-      // var minutesDifference = Math.floor(difference);
-      // console.log(minutesDifference);
-      const timeString = new Date(time.toNumber() * 1000).toLocaleString();
-      // console.log(timeString);
-      return time;
-    } catch (e) {
-      console.log('getBurnTime failed', e);
-
-      return 0;
-    }
-  };
-
   const startBurn = async (logId: string) => {
     try {
       const txCur = await tx?.(FireWrite.startBurnTime(logId));
@@ -95,7 +70,7 @@ export const YuleLog: FC<YuleLogProps> = (props) => {
     }
   };
 
-  const updateYourOldEnglish = async () => {
+  const updateYourYuleLogs = async () => {
     const balance = await FireRead.balanceOf(address);
 
     for (let tokenIndex = 0; tokenIndex < balance; tokenIndex++) {
@@ -118,7 +93,7 @@ export const YuleLog: FC<YuleLogProps> = (props) => {
       <button className="btn mr-10 mt-5" onClick={handleMintLog}>
         Mint Log 🪵
       </button>
-      <button className="btn mt-5" onClick={updateYourOldEnglish}>
+      <button className="btn mt-5" onClick={updateYourYuleLogs}>
         Update Logs 🔄
       </button>
       <div className="grid grid-cols-4 gap-4 p-10 ">
@@ -129,11 +104,6 @@ export const YuleLog: FC<YuleLogProps> = (props) => {
             return (
               <div className="card card-bordered ">
                 <div className="width-full  justify-center items-center">
-                  {/* <img
-                    src={oe.image}
-                    // style={{ border: '1px solid orange', width: '100px', display: 'flex', flex: 1 }}
-                    className="border-4 border-orange-400 ml-30"
-                  /> */}
                   <div className=" mt-10 flex justify-center">
                     <img src={oe.image} className="object-cover h-28 w-46" />
                   </div>
@@ -146,9 +116,6 @@ export const YuleLog: FC<YuleLogProps> = (props) => {
                     <button onClick={() => startBurn(id)} className="btn btn-xs">
                       Add to fire 🔥
                     </button>
-                    {/* <button onClick={() => getBurnTime(id)} className="btn btn-xs">
-                      Get Burn Time ⏰
-                    </button> */}
                   </div>
                 </div>
               </div>
